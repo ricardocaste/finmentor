@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:finmentor/presentation/bloc/courses/courses_cubit.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:finmentor/di/di.dart';
-import 'package:finmentor/infrastructure/utils.dart';
 import 'package:finmentor/presentation/bloc/authentication/authentication_cubit.dart';
 import 'package:finmentor/presentation/bloc/trophies/trophies_cubit.dart';
 import 'package:finmentor/presentation/pages/home/home_page.dart';

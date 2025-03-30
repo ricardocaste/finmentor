@@ -48,7 +48,9 @@ class _HomePageState extends State<HomePage> {
           removeLeading: true,
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed('notifications');
+              },
               icon: SvgPicture.asset(
                 'assets/images/noti.svg',
                 colorFilter: ColorFilter.mode(

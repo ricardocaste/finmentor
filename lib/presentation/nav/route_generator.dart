@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:finmentor/infrastructure/services/navigation_service.dart';
 import 'package:finmentor/presentation/nav/nav_bar.dart';
 import 'package:finmentor/presentation/pages/splash/splash.dart';
+import 'package:finmentor/presentation/pages/notifications/notifications_page.dart';
 
 class RouteGenerator {
 
@@ -17,6 +18,8 @@ class RouteGenerator {
         return buildTransition(const Splash(), settings: settings);
       case 'nav':
         return buildTransition(const NavBar(), settings: settings);
+      case 'notifications':
+        return buildTransition(const NotificationsPage(), settings: settings);
       default:
         return _errorRoute();
     }

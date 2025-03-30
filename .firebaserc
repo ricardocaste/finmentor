@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "finmentor-ai"
+  },
+  "targets": {
+    "finmentor-ai": {
+      "hosting": {
+        "finmentor": [
+          "finmentor-ai"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
