@@ -102,12 +102,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
         separatorBuilder: (context, index) => const Divider(height: 1),
         itemBuilder: (context, index) {
           final notification = notifications[index];
-          return ListTile(
+          return ListTile(onTap: () => Navigator.of(context).pushNamed('detail'),
             leading: Container(
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.grey.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(

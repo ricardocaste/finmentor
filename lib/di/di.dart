@@ -14,6 +14,7 @@ import 'package:finmentor/presentation/bloc/authentication/authentication_cubit.
 import 'package:finmentor/presentation/bloc/courses/courses_cubit.dart';
 import 'package:finmentor/presentation/bloc/user/user_cubit.dart';
 import 'package:finmentor/presentation/bloc/trophies/trophies_cubit.dart';
+import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 
 final getIt = GetIt.instance;
 Future<void> init() async {
@@ -34,4 +35,5 @@ Future<void> init() async {
       coursesRepository: getIt<CoursesRepository>(),
     ),
   );
+  getIt.registerLazySingleton(() => TermsCubit());
 }

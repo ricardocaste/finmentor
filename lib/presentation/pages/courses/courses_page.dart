@@ -1,7 +1,9 @@
 import 'package:finmentor/domain/models/course.dart';
 import 'package:finmentor/presentation/bloc/courses/courses_cubit.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
+import 'package:finmentor/di/di.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -10,11 +12,11 @@ class CoursesPage extends StatefulWidget {
   
   //final CoursesCubit coursesCubit;
   @override
-  State<CoursesPage> createState() => CoursesPageState();
+  State<CoursesPage> createState() => _CoursesPageState();
 }
 
-
-class CoursesPageState extends State<CoursesPage> {
+class _CoursesPageState extends State<CoursesPage> {
+  late final TermsCubit termsCubit = getIt<TermsCubit>();
 
   //late AudioPlayer _audioPlayer;
   List<Course> courses = [];
@@ -32,7 +34,12 @@ class CoursesPageState extends State<CoursesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _courses([]);
+    return BlocProvider.value(
+      value: termsCubit,
+      child: Scaffold(
+        body: _courses([]),
+      ),
+    );
   }
 
   Widget _courses(List<Course> courses) {
@@ -43,7 +50,7 @@ class CoursesPageState extends State<CoursesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Courses',
+              'Financial Terms',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -85,14 +92,14 @@ class CoursesPageState extends State<CoursesPage> {
             ),
             
             const SizedBox(height: 32),
-            const Text(
-              'Notifications',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
+            // const Text(
+            //   'Notifications',
+            //   style: TextStyle(
+            //     fontSize: 20,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+            // const SizedBox(height: 16),
             
             // Course Cards
             ListView(
@@ -101,16 +108,16 @@ class CoursesPageState extends State<CoursesPage> {
               children: [
                 _buildCourseCard(
                   category: 'Financial Education',
-                  title: 'The Power of Compound Interest',
-                  description: 'Analyze the impact on your portfolio.',
+                  title: 'Omi Token',
+                  description: 'The key to unlocking financial freedom in the Omi ecosystem. Earn, trade, and grow your wealth with seamless transactions and exclusive rewards. Your money, your rules.',
                   buttonText: 'See NFT',
                   imagePath: 'assets/images/course1.png',
                 ),
                 const SizedBox(height: 16),
                 _buildCourseCard(
                   category: 'Investment Tip',
-                  title: 'Diversify your holdings for balanced risk',
-                  description: 'Consider bonds and REITs.',
+                  title: 'Smart Budgeting ',
+                  description: 'Take control of your finances with AI-driven budgeting! Track expenses, optimize spending, and reach your savings goals effortlessly. Let your money work for you.',
                   buttonText: 'Claim Learning NFT',
                   imagePath: 'assets/images/course2.png',
                   isSpecialButton: true,
@@ -118,9 +125,9 @@ class CoursesPageState extends State<CoursesPage> {
                 const SizedBox(height: 16),
                 _buildCourseCard(
                   category: 'Crypto Insight',
-                  title: 'Potential altcoins for Q4 2024',
-                  description: 'Explore innovative DeFi and gaming tokens.',
-                  buttonText: 'See NFT',
+                  title: 'AI-Powered Investing',
+                  description: 'Invest smarter, not harder! Our AI analyzes market trends to help you diversify and maximize returns. Say goodbye to guesswork and hello to financial growth.',
+                  buttonText: 'Claim Learning NFT',
                   imagePath: 'assets/images/course3.png',
                 ),
               ],
@@ -139,9 +146,11 @@ class CoursesPageState extends State<CoursesPage> {
     required String imagePath,
     bool isSpecialButton = false,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pushNamed('detail'),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey[200]!),
@@ -177,18 +186,7 @@ class CoursesPageState extends State<CoursesPage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isSpecialButton ? const Color(0xFFB93BF9) : Colors.grey[200],
-                    foregroundColor: isSpecialButton ? Colors.white : Colors.black,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(buttonText),
-                ),
+                _buildButton(buttonText),
               ],
             ),
           ),
@@ -205,6 +203,26 @@ class CoursesPageState extends State<CoursesPage> {
           ),
         ],
       ),
+      ),
     );
+  }
+
+  Widget _buildButton(String buttonText) {
+    return ElevatedButton(
+      onPressed: buttonText == 'Claim Learning NFT' ? _onClaimNFT : null,
+      child: Text(buttonText),
+    );
+  }
+
+  void _onClaimNFT() async {
+    await termsCubit.incrementTermsLearned();
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('¡Nuevo término aprendido!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 }

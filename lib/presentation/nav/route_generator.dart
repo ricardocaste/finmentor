@@ -3,6 +3,7 @@ import 'package:finmentor/infrastructure/services/navigation_service.dart';
 import 'package:finmentor/presentation/nav/nav_bar.dart';
 import 'package:finmentor/presentation/pages/splash/splash.dart';
 import 'package:finmentor/presentation/pages/notifications/notifications_page.dart';
+import 'package:finmentor/presentation/pages/detail/detail_page.dart';
 
 class RouteGenerator {
 
@@ -20,6 +21,8 @@ class RouteGenerator {
         return buildTransition(const NavBar(), settings: settings);
       case 'notifications':
         return buildTransition(const NotificationsPage(), settings: settings);
+      case 'detail':
+        return buildTransition(const DetailPage(), settings: settings);
       default:
         return _errorRoute();
     }

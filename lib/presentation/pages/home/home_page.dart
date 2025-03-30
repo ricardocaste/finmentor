@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finmentor/di/di.dart';
 import 'package:finmentor/domain/models/user.dart';
 import 'package:finmentor/infrastructure/utils.dart';
 import 'package:finmentor/presentation/bloc/user/user_cubit.dart';
 import 'package:finmentor/presentation/bloc/courses/courses_cubit.dart';
+import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 import 'package:finmentor/presentation/widgets/app_bar_widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final UserCubit userCubit = getIt<UserCubit>();
+  late final TermsCubit termsCubit = getIt<TermsCubit>();
   User? user;
 
   @override
@@ -42,7 +45,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: termsCubit),
+      ],
+      child: Scaffold(
         appBar: AppBarWidget(
           context: context,          
           removeLeading: true,
@@ -72,7 +79,9 @@ class _HomePageState extends State<HomePage> {
               //const ProgressView()
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget mainView() {
@@ -89,8 +98,8 @@ class _HomePageState extends State<HomePage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 24),
-          _buildLearningProgress(),
+          // const SizedBox(height: 24),
+          // _buildLearningProgress(),
           const SizedBox(height: 24),
           _buildSummary(),
           const SizedBox(height: 24),
@@ -160,11 +169,11 @@ class _HomePageState extends State<HomePage> {
         Row(
           children: [
             Expanded(
-              child: _buildSummaryCard('Completed\nCourses', '5'),
+              child: _buildSummaryCard('Terms\nLearned', '5'),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: _buildSummaryCard('Time Spent\nLearning', '20 hours'),
+              child: _buildSummaryCard('Thropies\nEarned', '20'),
             ),
           ],
         ),
@@ -174,6 +183,43 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSummaryCard(String title, String value) {
+    if (title.contains('Terms')) {
+      return BlocBuilder<TermsCubit, int>(
+        builder: (context, termsCount) {
+          return Container(
+            padding: const EdgeInsets.all(25),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: const Color(0xFFB93BF9),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF0D141C),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  termsCount.toString(),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
     return Container(
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
@@ -191,7 +237,7 @@ class _HomePageState extends State<HomePage> {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color:  Color(0xFF0D141C),
+              color: Color(0xFF0D141C),
             ),
           ),
           const SizedBox(height: 8),
@@ -212,17 +258,19 @@ class _HomePageState extends State<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Today\'s Recommendation',
+          'Last Term from Omi',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 16),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+        GestureDetector(
+          onTap: () => Navigator.of(context).pushNamed('detail'),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
              boxShadow: [
               BoxShadow(
                 color: Colors.grey.withValues(alpha: .1),
@@ -257,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     Text(
-                      'Introduction to DeFi',
+                      'Omi Token',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -265,24 +313,25 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Learn about decentralized finance and its potential impact on the future of finance.',
+                      'The key to unlocking financial freedom in the Omi ecosystem. Earn, trade, and grow your wealth with seamless transactions and exclusive rewards. Your money, your rules.',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
                       ),
                     ),
                     SizedBox(height: 8),
-                    Text(
-                      '3 modules',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    // Text(
+                    //   '3 modules',
+                    //   style: TextStyle(
+                    //     fontSize: 14,
+                    //     color: Colors.grey,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
-            ],
+              ],
+            ),
           ),
         ),
       ],
@@ -301,8 +350,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         const SizedBox(height: 16),
-        _buildActionItem(Icons.add_circle_outline, 'Start New Course'),
-        _buildActionItem(Icons.menu_book_outlined, 'View Course Catalog'),
+        _buildActionItem(Icons.add_circle_outline, 'New Term'),
+        _buildActionItem(Icons.menu_book_outlined, 'View Terms'),
         _buildActionItem(Icons.quiz_outlined, 'Practice Quizzes'),
       ],
     );

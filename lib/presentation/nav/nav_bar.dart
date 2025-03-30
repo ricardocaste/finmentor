@@ -134,7 +134,7 @@ class NavBarState extends State<NavBar> {
                                         .color!,
                                     BlendMode.srcIn,
                                   )),
-                              title: Text('Courses',
+                              title: Text('Financial Terms',
                                   style:
                                       Theme.of(context).textTheme.bodyMedium),
                             ),
