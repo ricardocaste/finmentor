@@ -1,3 +1,4 @@
+import 'package:finmentor/domain/models/term.dart';
 import 'package:flutter/material.dart';
 import 'package:finmentor/infrastructure/services/navigation_service.dart';
 import 'package:finmentor/presentation/nav/nav_bar.dart';
@@ -11,7 +12,7 @@ class RouteGenerator {
 
 
   static Route<dynamic> generateRouter(RouteSettings settings) {
-    //final args = settings.arguments;
+    final args = settings.arguments;
     navigationService.updateRoute(settings.name ?? '');
 
     switch (settings.name) {
@@ -22,7 +23,8 @@ class RouteGenerator {
       case 'notifications':
         return buildTransition(const NotificationsPage(), settings: settings);
       case 'detail':
-        return buildTransition(const DetailPage(), settings: settings);
+        final term = args as Term;
+        return buildTransition(DetailPage(term: term), settings: settings);
       default:
         return _errorRoute();
     }

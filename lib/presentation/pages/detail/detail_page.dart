@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:finmentor/domain/models/term.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  final Term term;
+
+  const DetailPage({
+    super.key,
+    required this.term,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +20,9 @@ class DetailPage extends StatelessWidget {
           icon: const Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          'Financial Education',
-          style: TextStyle(
+        title: Text(
+          term.category,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -30,37 +36,31 @@ class DetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'The Power of Compound Interest',
-                style: TextStyle(
+              Text(
+                term.title,
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Compound interest is like a snowball rolling down a hill: it grows larger and larger as it accumulates more snow. In investing, this means your interest earns interest, creating exponential growth over time.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  height: 1.5,
+              ...term.content.map((paragraph) => Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Text(
+                  paragraph,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    height: 1.5,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Compound interest is like a snowball rolling down a hill: it grows larger and larger as it accumulates more snow. In investing, this means your interest earns interest, creating exponential growth over time.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  height: 1.5,
-                ),
-              ),
+              )).toList(),
               const SizedBox(height: 24),
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
-                  'assets/images/compound_interest.png', // Asegúrate de tener esta imagen en tu proyecto
+                  term.imagePath,
                   width: double.infinity,
                   height: 300,
                   fit: BoxFit.cover,

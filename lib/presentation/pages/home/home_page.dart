@@ -1,16 +1,17 @@
 import 'dart:async';
 
+import 'package:finmentor/domain/models/term.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finmentor/di/di.dart';
 import 'package:finmentor/domain/models/user.dart';
 import 'package:finmentor/infrastructure/utils.dart';
 import 'package:finmentor/presentation/bloc/user/user_cubit.dart';
-import 'package:finmentor/presentation/bloc/courses/courses_cubit.dart';
 import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 import 'package:finmentor/presentation/widgets/app_bar_widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -41,6 +42,31 @@ class _HomePageState extends State<HomePage> {
         0; // Obtiene los días actuales o 0 si no existe
     await prefs.setInt(
         'study_days', currentStudyDays + 1); // Incrementa y guarda
+  }
+
+  Future<void> _launchUrl(String url, BuildContext context) async {
+    final Uri uri = Uri.parse(url);
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No se pudo abrir el enlace'),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al abrir el enlace: $e'),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -184,8 +210,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildSummaryCard(String title, String value) {
     if (title.contains('Terms')) {
-      return BlocBuilder<TermsCubit, int>(
-        builder: (context, termsCount) {
+      return BlocBuilder<TermsCubit, TermsState>(
+        builder: (context, state) {
           return Container(
             padding: const EdgeInsets.all(25),
             decoration: BoxDecoration(
@@ -208,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  termsCount.toString(),
+                  state.termsLearned.toString(),
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -266,7 +292,7 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 16),
         GestureDetector(
-          onTap: () => Navigator.of(context).pushNamed('detail'),
+          onTap: () => Navigator.of(context).pushNamed('detail', arguments: Term.terms[0]),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -343,39 +369,189 @@ class _HomePageState extends State<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Quick Actions',
+          'Know more about the project',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
+        const SizedBox(height: 24),
+        
+        // Our Team Section
+        const Text(
+          'Our team',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         const SizedBox(height: 16),
-        _buildActionItem(Icons.add_circle_outline, 'New Term'),
-        _buildActionItem(Icons.menu_book_outlined, 'View Terms'),
-        _buildActionItem(Icons.quiz_outlined, 'Practice Quizzes'),
+        _buildTeamMember('Rafael Martín Gallego', 'https://www.linkedin.com/in/rafaelmartingallego/', 'assets/images/rafael.png'),
+        _buildTeamMember('Ricardo Castellanos', 'https://www.linkedin.com/in/ricardo-castellanos-herreros/', 'assets/images/ricardo.png'),
+        _buildTeamMember('Cristhian Rodriguez', 'https://www.linkedin.com/in/cristhianrodr%C3%ADguez/', 'assets/images/cris.png'),
+        
+        const SizedBox(height: 32),
+        
+        // We work with Section
+        const Text(
+          'We work with',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 16),
+        _buildTool('Figma', '(Design)', 'https://www.figma.com/', 'assets/images/figma.png'),
+        _buildTool('Flutter', '(App)', 'https://flutter.dev/', 'assets/images/flutter.png'),
+        _buildTool('AZbox', '(Translations)', 'https://azbox.io/', 'assets/images/azbox.png'),
+        _buildTool('Brotea', '(Plan Project)', 'https://brotea.xyz/', 'assets/images/brotea.png'),
+        
+        const SizedBox(height: 32),
+        
+        // Testimonials Section
+        const Text(
+          'What they say about us',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 16),
+        _buildTestimonial(
+          name: 'David Lynch',
+          title: 'An Essential Financial Assistant!',
+          content: 'FinMentor has been a game-changer. The "OMI - Explain that" feature helps me understand finance easily during podcasts & chats. Highly recommend!',
+          rating: 5,
+        ),
+        const SizedBox(height: 16),
+        _buildTestimonial(
+          name: 'David Lynch',
+          title: 'Say Goodbye to Jargon!',
+          content: 'As an entrepreneur, I love FinMentor. "OMI - Explain that" is my go-to for financial terms I don\'t know. The AI is amazing and saves me research time. A must-have app!',
+          rating: 5,
+        ),
+        
+        const SizedBox(height: 32),
+        // Sponsored Section
+        Center(
+          child: Column(
+            children: [
+              const SizedBox(height: 8),
+              Image.asset(
+                'assets/images/brotea_logo.png',
+                height: 60,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildActionItem(IconData icon, String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildTeamMember(String name, String linkedin, String imagePath) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: CircleAvatar(
+        backgroundImage: AssetImage(imagePath),
+        radius: 20,
+      ),
+      title: Text(
+        name,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => _launchUrl(linkedin, context),
+    );
+  }
+
+  Widget _buildTool(String name, String description, String url, String imagePath) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.asset(
+          imagePath,
+          width: 40,
+          height: 40,
+          fit: BoxFit.cover,
+        ),
+      ),
+      title: Row(
         children: [
-          Row(
-            children: [
-              Icon(icon, size: 24),
-              const SizedBox(width: 16),
-              Text(
-                text,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ],
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          const Icon(Icons.chevron_right, size: 24),
+          const SizedBox(width: 4),
+          Text(
+            description,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+          ),
+        ],
+      ),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => _launchUrl(url, context),
+    );
+  }
+
+  Widget _buildTestimonial({
+    required String name,
+    required String title,
+    required String content,
+    required int rating,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            content,
+            style: const TextStyle(
+              fontSize: 14,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: List.generate(
+              rating,
+              (index) => const Icon(
+                Icons.star,
+                color: Colors.purple,
+                size: 20,
+              ),
+            ),
+          ),
         ],
       ),
     );
