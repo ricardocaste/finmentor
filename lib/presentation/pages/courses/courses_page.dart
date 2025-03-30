@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 import 'package:finmentor/di/di.dart';
-import 'package:finmentor/presentation/pages/detail/detail_page.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});

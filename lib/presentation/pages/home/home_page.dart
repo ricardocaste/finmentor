@@ -137,49 +137,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildLearningProgress() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Text(
-              'Your Progress',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Spacer(),
-            const Text(
-              '65% complete',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        
-        
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: SizedBox(
-            height: 10,
-            child: LinearProgressIndicator(
-              value: 0.65,
-              backgroundColor: Colors.grey[200],
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
-            ),
-          ),
-        ),
-        const SizedBox(height: 4),
-        
-      ],
-    );
-  }
-
   Widget _buildSummary() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,11 +152,11 @@ class _HomePageState extends State<HomePage> {
         Row(
           children: [
             Expanded(
-              child: _buildSummaryCard('Terms\nLearned', '5'),
+              child: _buildSummaryCard('Terms\nLearned', ''),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: _buildSummaryCard('Thropies\nEarned', '20'),
+              child: _buildSummaryCard('Thropies\nEarned', '6'),
             ),
           ],
         ),

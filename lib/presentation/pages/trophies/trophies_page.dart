@@ -91,7 +91,7 @@ class TrophiesPageState extends State<TrophiesPage> {
                   image: 'assets/images/nft2.png',
                   title: 'Financial Education I',
                   isActive: true,
-                  isSelected: true,
+                  isSelected: false,
                 ),
                 _buildNFTCard(
                   image: 'assets/images/nft3.png',
@@ -111,7 +111,7 @@ class TrophiesPageState extends State<TrophiesPage> {
                 _buildNFTCard(
                   image: 'assets/images/nft6.png',
                   title: '************',
-                  isActive: false,
+                  isActive: true,
                 ),
                 _buildNFTCard(
                   image: 'assets/images/nft7.png',

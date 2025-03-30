@@ -32,10 +32,10 @@ class SplashState extends State<Splash> {
             alignment: Alignment.center,
             child: Image.asset(
               'assets/images/logo.png',
-              width: 200,
-              height: 200,
+              width: 214,
+              height: 214,
             ),
-          ),
+          )
         ],
       ),
     );
