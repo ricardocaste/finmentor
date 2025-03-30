@@ -1,0 +1,66 @@
+name: finmentor
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # firebase
+  firebase_core: ^2.32.0
+  firebase_analytics: ^10.10.7
+  cloud_firestore: ^4.17.5
+  firebase_auth: ^4.20.0
+
+  # state management
+  get: ^4.6.6
+  get_it: ^8.0.1
+  flutter_bloc: ^9.1.0
+  hydrated_bloc: ^10.0.0
+  bloc: ^9.0.0
+  equatable: ^2.0.5
+
+  flutter_svg: ^2.0.10+1
+  flashy_tab_bar2: ^0.0.10
+  adaptive_theme: ^3.6.0  
+
+  #DIALOG
+  fluid_dialog: ^2.0.0
+
+  #URL LAUNCHER
+  url_launcher: ^6.2.5
+
+  shared_preferences: ^2.2.2
+  rflutter_alert: ^2.0.7
+ 
+  uuid: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
+    - assets/audio/
+    - assets/launcher/
+    - assets/fonts/
