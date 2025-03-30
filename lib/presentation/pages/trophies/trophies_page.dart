@@ -113,6 +113,16 @@ class TrophiesPageState extends State<TrophiesPage> {
                   title: '************',
                   isActive: false,
                 ),
+                _buildNFTCard(
+                  image: 'assets/images/nft7.png',
+                  title: '************',
+                  isActive: false,
+                ),
+                _buildNFTCard(
+                  image: 'assets/images/nft8.png',
+                  title: '************',
+                  isActive: false,
+                ),
               ],
             ),
           ],
@@ -149,15 +159,15 @@ class TrophiesPageState extends State<TrophiesPage> {
           ),
         ),
         const SizedBox(height: 8),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: isActive ? Colors.black : Colors.grey,
-          ),
-          textAlign: TextAlign.center,
-        ),
+        // Text(
+        //   title,
+        //   style: TextStyle(
+        //     fontSize: 14,
+        //     fontWeight: FontWeight.w500,
+        //     color: isActive ? Colors.black : Colors.grey,
+        //   ),
+        //   textAlign: TextAlign.center,
+        // ),
       ],
     );
   }

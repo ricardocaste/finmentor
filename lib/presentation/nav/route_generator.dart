@@ -1,4 +1,7 @@
+import 'package:finmentor/di/di.dart';
 import 'package:finmentor/domain/models/term.dart';
+import 'package:finmentor/presentation/bloc/trophies/trophies_cubit.dart';
+import 'package:finmentor/presentation/pages/trophies/trophies_page.dart';
 import 'package:flutter/material.dart';
 import 'package:finmentor/infrastructure/services/navigation_service.dart';
 import 'package:finmentor/presentation/nav/nav_bar.dart';
@@ -25,6 +28,8 @@ class RouteGenerator {
       case 'detail':
         final term = args as Term;
         return buildTransition(DetailPage(term: term), settings: settings);
+      case 'trophies':
+        return buildTransition(TrophiesPage(trophiesCubit: getIt<TrophiesCubit>()), settings: settings);
       default:
         return _errorRoute();
     }

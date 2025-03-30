@@ -151,11 +151,7 @@ class _CoursesPageState extends State<CoursesPage> {
         final actualButtonText = isClaimed ? 'See NFT' : buttonText;
         
         return GestureDetector(
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => DetailPage(term: term),
-            ),
-          ),
+          onTap: () => Navigator.of(context).pushNamed('detail', arguments: term),
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -221,11 +217,7 @@ class _CoursesPageState extends State<CoursesPage> {
     return ElevatedButton(
       onPressed: buttonText == 'Claim Learning NFT' 
           ? () => _onClaimNFT(term.title)
-          : () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DetailPage(term: term),
-              ),
-            ),
+          : () => Navigator.of(context).pushNamed('trophies'),
       style: ElevatedButton.styleFrom(
         backgroundColor: buttonText == 'Claim Learning NFT' ? const Color(0xFFB93BF9) : Colors.grey[200],
         foregroundColor: buttonText == 'Claim Learning NFT' ? Colors.white : Colors.black,
