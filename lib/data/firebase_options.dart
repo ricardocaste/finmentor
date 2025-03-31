@@ -52,12 +52,6 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: "AIzaSyAJ7N4ri5RPqlOM7VC7IqpGWpIwzzrxn0A",
-    authDomain: "finmentor-ai.firebaseapp.com",
-    projectId: "finmentor-ai",
-    storageBucket: "finmentor-ai.firebasestorage.app",
-    messagingSenderId: "99475374148",
-    appId: "1:99475374148:web:d5a88207cf0fda58befc11",
-    measurementId: "G-JW5PWLG3T8"
+
   );
 }
