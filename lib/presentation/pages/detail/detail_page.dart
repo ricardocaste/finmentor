@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:finmentor/domain/models/term.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends StatelessWidget {
   final Term term;
@@ -79,7 +80,7 @@ class DetailPage extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
-                      // TODO: Implementar la acción del botón
+                      _launchUrl(term, context);
                     },
                     child: const Center(
                       child: Text(
@@ -99,5 +100,42 @@ class DetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(Term term, BuildContext context) async {
+    String url = '';
+    switch (term.title) {
+      case 'Omi Token':
+        url = 'https://omi.me/';
+        break;
+      case 'Smart Budgeting':
+        url = 'https://zencity.io/smart-budgeting-a-data-driven-guide-for-local-governments/';
+        break;
+      case 'AI-Powered Investing':
+        url = 'https://www.investopedia.com/how-to-use-artificial-intelligence-in-your-investing-7973810';
+        break;  
+    }
+    final Uri uri = Uri.parse(url);
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No se pudo abrir el enlace'),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al abrir el enlace: $e'),
+          ),
+        );
+      }
+    }
   }
 }

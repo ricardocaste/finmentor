@@ -50,6 +50,8 @@ class _CoursesPageState extends State<CoursesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Image.asset('assets/images/minilogo.png', width: 50, height: 50),
+            const SizedBox(height: 6),
             const Text(
               'Financial Terms',
               style: TextStyle(

@@ -117,6 +117,8 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Image.asset('assets/images/minilogo.png', width: 50, height: 50),
+          const SizedBox(height: 6),
           const Text(
             'Dashboard',
             style: TextStyle(
@@ -346,6 +348,7 @@ class _HomePageState extends State<HomePage> {
         _buildTeamMember('Rafael Martín Gallego', 'https://www.linkedin.com/in/rafaelmartingallego/', 'assets/images/rafael.png'),
         _buildTeamMember('Ricardo Castellanos', 'https://www.linkedin.com/in/ricardo-castellanos-herreros/', 'assets/images/ricardo.png'),
         _buildTeamMember('Cristhian Rodriguez', 'https://www.linkedin.com/in/cristhianrodr%C3%ADguez/', 'assets/images/cris.png'),
+        _buildTeamMember('Ali Hussein', 'https://www.linkedin.com/in/ali-hussein-721a5a359/', 'assets/images/ali.png'),
         
         const SizedBox(height: 32),
         
@@ -375,7 +378,7 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 16),
         _buildTestimonial(
-          name: 'David Lynch',
+          name: 'Carlos Rodriguez',
           title: 'An Essential Financial Assistant!',
           content: 'FinMentor has been a game-changer. The "OMI - Explain that" feature helps me understand finance easily during podcasts & chats. Highly recommend!',
           rating: 5,
@@ -400,6 +403,29 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+        ),
+        const SizedBox(height: 32),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildSocialIcon(
+              path: 'assets/images/x.png',
+              url: 'https://x.com/finmentorai',
+              label: 'X (Twitter)',
+            ),
+            const SizedBox(width: 16),
+            _buildSocialIcon(
+              path: 'assets/images/instagram.svg',
+              url: 'https://www.instagram.com/finmentorai/',
+              label: 'Instagram',
+            ),
+            const SizedBox(width: 16),
+            _buildSocialIcon(
+              path: 'assets/images/tiktok.svg',
+              url: 'https://www.tiktok.com/@finmentorai',
+              label: 'TikTok',
+            ),
+          ],
         ),
       ],
     );
@@ -510,6 +536,39 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSocialIcon({
+    required String path,
+    required String url,
+    required String label,
+  }) {
+    return InkWell(
+      onTap: () => _launchUrl(url, context),
+      child: Tooltip(
+        message: label,
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: path.contains('svg') ? SvgPicture.asset(
+            path,
+            colorFilter: ColorFilter.mode(
+              Colors.black87,
+              BlendMode.srcIn,
+            ),
+            width: 24,
+            height: 24,
+          ) : Image.asset(
+            path,
+            width: 24,
+            height: 24,
+          ),
+        ),
       ),
     );
   }

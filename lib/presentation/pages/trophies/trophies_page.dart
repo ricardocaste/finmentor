@@ -40,13 +40,17 @@ class TrophiesPageState extends State<TrophiesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset('assets/images/minilogo.png', width: 50, height: 50),
+              const SizedBox(height: 6),
+              const Text(
               'Trophies',
               style: TextStyle(
                 fontSize: 28,
@@ -72,60 +76,61 @@ class TrophiesPageState extends State<TrophiesPage> {
               ),
             ),
             const SizedBox(height: 24),
-            
-            // Grid de NFTs
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 1,
-              children: [
-                _buildNFTCard(
-                  image: 'assets/images/nft1.png',
-                  title: 'My first notion',
-                  isActive: true,
-                ),
-                _buildNFTCard(
-                  image: 'assets/images/nft2.png',
-                  title: 'Financial Education I',
-                  isActive: true,
-                  isSelected: false,
-                ),
-                _buildNFTCard(
-                  image: 'assets/images/nft3.png',
-                  title: 'Financial Education II',
-                  isActive: true,
-                ),
-                _buildNFTCard(
-                  image: 'assets/images/nft4.png',
-                  title: 'Financial Education III',
-                  isActive: true,
-                ),
-                _buildNFTCard(
-                  image: 'assets/images/nft5.png',
-                  title: 'My first Crypto',
-                  isActive: true,
-                ),
-                _buildNFTCard(
-                  image: 'assets/images/nft6.png',
-                  title: '************',
-                  isActive: true,
-                ),
-                _buildNFTCard(
-                  image: 'assets/images/nft7.png',
-                  title: '************',
-                  isActive: false,
-                ),
-                _buildNFTCard(
-                  image: 'assets/images/nft8.png',
-                  title: '************',
-                  isActive: false,
-                ),
-              ],
-            ),
-          ],
+              
+              // Grid de NFTs
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                childAspectRatio: 1,
+                children: [
+                  _buildNFTCard(
+                    image: 'assets/images/nft1.png',
+                    title: 'My first notion',
+                    isActive: true,
+                  ),
+                  _buildNFTCard(
+                    image: 'assets/images/nft2.png',
+                    title: 'Financial Education I',
+                    isActive: true,
+                    isSelected: false,
+                  ),
+                  _buildNFTCard(
+                    image: 'assets/images/nft3.png',
+                    title: 'Financial Education II',
+                    isActive: true,
+                  ),
+                  _buildNFTCard(
+                    image: 'assets/images/nft7.png',
+                    title: 'Financial Education III',
+                    isActive: false,
+                  ),
+                  _buildNFTCard(
+                    image: 'assets/images/nft7.png',
+                    title: 'My first Crypto',
+                    isActive: false,
+                  ),
+                  _buildNFTCard(
+                    image: 'assets/images/nft8.png',
+                    title: '************',
+                    isActive: false,
+                  ),
+                  _buildNFTCard(
+                    image: 'assets/images/nft7.png',
+                    title: '************',
+                    isActive: false,
+                  ),
+                  _buildNFTCard(
+                    image: 'assets/images/nft8.png',
+                    title: '************',
+                    isActive: false,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
