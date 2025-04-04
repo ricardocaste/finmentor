@@ -1,3 +1,72 @@
+class ApiTerm {
+  final String id;
+  final String term;
+  final String image;
+  final String shortDescription;
+  final String longDescription;
+  final String category;
+  final String termType;
+  final List<String> relationsBetweenTerms;
+  final List<String> examples;
+
+  ApiTerm({
+    required this.id,
+    required this.term,
+    required this.image,
+    required this.shortDescription,
+    required this.longDescription,
+    required this.category,
+    required this.termType,
+    required this.relationsBetweenTerms,
+    required this.examples,
+  });
+
+  factory ApiTerm.fromJson(Map<String, dynamic> json) {
+    return ApiTerm(
+      id: json['id'] ?? '',
+      term: json['term'] ?? '',
+      image: json['image'] ?? '',
+      shortDescription: json['shortDescription'] ?? '',
+      longDescription: json['longDescription'] ?? '',
+      category: json['category'] ?? '',
+      termType: json['termType'] ?? '',
+      relationsBetweenTerms: List<String>.from(json['relationsBetweenTerms'] ?? []),
+      examples: List<String>.from(json['examples'] ?? []),
+    );
+  }
+
+  // Método para convertir ApiTerm a Term
+  Term toTerm() {
+    return Term(
+      title: term,
+      category: category,
+      description: shortDescription,
+      content: [longDescription],
+      imagePath: image,
+    );
+  }
+}
+
+
+// {
+//             "id": "term-1",
+//             "term": "ETF",
+//             "image": "https://omi.devfolio.co/_next/image?url=https%3A%2F%2Fassets.devfolio.co%2Fhackathons%2F44a87b7e2f4941c2861458615ca7d9fa%2Fassets%2Ffavicon%2F741.png&w=1440&q=75",
+//             "shortDescription": "Fondo cotizado en bolsa",
+//             "longDescription": "Un ETF (Exchange-Traded Fund) es un tipo de fondo de inversión que cotiza en bolsa como una acción...",
+//             "category": "inversiones",
+//             "termType": "web2",
+//             "relationsBetweenTerms": [
+//                 "fondo indexado",
+//                 "comisiones",
+//                 "diversificación"
+//             ],
+//             "examples": [
+//                 "SPDR S&P 500 ETF (SPY)",
+//                 "iShares MSCI Emerging Markets ETF (EEM)"
+//             ]
+//         }
+
 class Term {
   final String title;
   final String category;

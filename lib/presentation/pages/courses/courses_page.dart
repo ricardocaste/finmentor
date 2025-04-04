@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:finmentor/domain/models/course.dart';
 import 'package:finmentor/domain/models/term.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 import 'package:finmentor/di/di.dart';
+import 'package:http/http.dart' as http;
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -17,7 +20,10 @@ class CoursesPage extends StatefulWidget {
 
 class _CoursesPageState extends State<CoursesPage> {
   late final TermsCubit termsCubit = getIt<TermsCubit>();
-  final terms = Term.terms;
+  //final terms = fetchTerms();
+  List<Term> terms = [];
+  bool isLoading = true;
+  String? error;
 
   //late AudioPlayer _audioPlayer;
   List<Course> courses = [];
@@ -25,7 +31,34 @@ class _CoursesPageState extends State<CoursesPage> {
   @override
   void initState() {
     super.initState();
-    //widget.coursesCubit.loadCourses();
+    _fetchTerms();
+  }
+
+  Future<void> _fetchTerms() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://677a-111-235-226-130.ngrok-free.app/api/v1/finmentor/terms/'),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['data'];
+        final List<ApiTerm> apiTerms = data.map((json) => ApiTerm.fromJson(json)).toList();
+        setState(() {
+          terms = apiTerms.map((apiTerm) => apiTerm.toTerm()).toList();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Error al cargar los términos';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        error = 'Error de conexión: $e';
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -35,6 +68,14 @@ class _CoursesPageState extends State<CoursesPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (error != null) {
+      return Center(child: Text(error!));
+    }
+
     return BlocProvider.value(
       value: termsCubit,
       child: Scaffold(
@@ -200,9 +241,18 @@ class _CoursesPageState extends State<CoursesPage> {
                   flex: 1,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
+                    child: Image.network(
                       imagePath,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 200,
+                          color: Colors.grey[200],
+                          child: const Center(
+                            child: Icon(Icons.error_outline),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
