@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:azbox/azbox.dart';
 import 'package:finmentor/domain/models/term.dart';
 import 'package:finmentor/presentation/bloc/home/home_cubit.dart';
+import 'package:finmentor/presentation/bloc/terms/terms_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finmentor/di/di.dart';
@@ -252,7 +253,7 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 16),
         GestureDetector(
-          onTap: () => Navigator.of(context).pushNamed('detail', arguments: Term.terms[0]),
+          onTap: () => Navigator.of(context).pushNamed('detail', arguments: termsCubit.getLastTerm()),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,

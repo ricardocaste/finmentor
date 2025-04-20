@@ -2,63 +2,34 @@ import 'dart:convert';
 
 import 'package:finmentor/domain/models/course.dart';
 import 'package:finmentor/domain/models/term.dart';
+import 'package:finmentor/presentation/bloc/terms/terms_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 import 'package:finmentor/di/di.dart';
 import 'package:http/http.dart' as http;
 
-class CoursesPage extends StatefulWidget {
-  const CoursesPage({super.key});
+class TermsPage extends StatefulWidget {
+  const TermsPage({super.key, required this.termsCubit});
 
   // final Function() showDialog;
   
-  //final CoursesCubit coursesCubit;
+  final TermsCubit termsCubit;
   @override
-  State<CoursesPage> createState() => _CoursesPageState();
+  State<TermsPage> createState() => _TermsPageState();
 }
 
-class _CoursesPageState extends State<CoursesPage> {
-  late final TermsCubit termsCubit = getIt<TermsCubit>();
-  //final terms = fetchTerms();
+class _TermsPageState extends State<TermsPage> {
   List<Term> terms = [];
   bool isLoading = true;
   String? error;
 
-  //late AudioPlayer _audioPlayer;
   List<Course> courses = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchTerms();
-  }
-
-  Future<void> _fetchTerms() async {
-    try {
-      final response = await http.get(
-        Uri.parse('https://677a-111-235-226-130.ngrok-free.app/api/v1/finmentor/terms/'),
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body)['data'];
-        final List<ApiTerm> apiTerms = data.map((json) => ApiTerm.fromJson(json)).toList();
-        setState(() {
-          terms = apiTerms.map((apiTerm) => apiTerm.toTerm()).toList();
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          error = 'Error al cargar los términos';
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        error = 'Error de conexión: $e';
-        isLoading = false;
-      });
-    }
+    widget.termsCubit.getTerms();
   }
 
   @override
@@ -77,14 +48,14 @@ class _CoursesPageState extends State<CoursesPage> {
     }
 
     return BlocProvider.value(
-      value: termsCubit,
+      value: widget.termsCubit,
       child: Scaffold(
-        body: _courses(),
+        body: _terms(),
       ),
     );
   }
 
-  Widget _courses() {
+  Widget _terms() {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -118,7 +89,7 @@ class _CoursesPageState extends State<CoursesPage> {
                           ),
                         ),
                         Text(
-                          '${(state.progress * 100).toInt()}% complete',
+                          '${(state.progress! * 100).toInt()}% complete',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -166,7 +137,7 @@ class _CoursesPageState extends State<CoursesPage> {
                   title: term.title,
                   description: term.description,
                   buttonText: index == 0 ? 'See NFT' : 'Claim Learning NFT',
-                  imagePath: term.imagePath,
+                  imagePath: term.image,
                   isSpecialButton: index == 1,
                   term: term,
                 );
@@ -189,7 +160,7 @@ class _CoursesPageState extends State<CoursesPage> {
   }) {
     return BlocBuilder<TermsCubit, TermsState>(
       builder: (context, state) {
-        final isClaimed = state.claimedTerms.contains(title);
+        final isClaimed = state.claimedTerms!.contains(title);
         final actualButtonText = isClaimed ? 'See NFT' : buttonText;
         
         return GestureDetector(
@@ -282,7 +253,7 @@ class _CoursesPageState extends State<CoursesPage> {
   }
 
   void _onClaimNFT(String termTitle) async {
-    await termsCubit.incrementTermsLearned(termTitle);
+    await widget.termsCubit.incrementTermsLearned(termTitle);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

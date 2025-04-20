@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:finmentor/infrastructure/services/branch_service.dart';
 import 'package:finmentor/infrastructure/services/posthog_service.dart';
 import 'package:finmentor/presentation/bloc/home/home_cubit.dart';
+import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 import 'package:finmentor/presentation/pages/settings/settings_page.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +14,7 @@ import 'package:finmentor/di/di.dart';
 import 'package:finmentor/presentation/bloc/authentication/authentication_cubit.dart';
 import 'package:finmentor/presentation/bloc/trophies/trophies_cubit.dart';
 import 'package:finmentor/presentation/pages/home/home_page.dart';
-import 'package:finmentor/presentation/pages/courses/courses_page.dart';
+import 'package:finmentor/presentation/pages/terms/terms_page.dart';
 import 'package:finmentor/presentation/pages/trophies/trophies_page.dart';
 
 typedef TabIndex = int;
@@ -54,6 +55,7 @@ class NavBarState extends State<NavBar> {
   late final authenticationCubit = getIt<AuthenticationCubit>();
   late final homeCubit = getIt<HomeCubit>();
   late final trophiesCubit = getIt<TrophiesCubit>();
+  late final termsCubit = getIt<TermsCubit>();
   //Branch
   StreamSubscription? _branchSubscription;
 
@@ -77,7 +79,7 @@ class NavBarState extends State<NavBar> {
     //TabBar
     tabItems = [
       HomePage(homeCubit: homeCubit),
-      CoursesPage(),
+      TermsPage(termsCubit: termsCubit),
       TrophiesPage(trophiesCubit: trophiesCubit),
       const SettingsPage(),
     ];

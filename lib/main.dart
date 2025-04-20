@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:azbox/azbox.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finmentor/infrastructure/constants/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -14,21 +15,12 @@ import 'package:path_provider/path_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // OneSignal.Debug.setLogLevel(OSLogLevel.none);
-  // OneSignal.initialize(Constants.oneSignalAppId);
-  // OneSignal.Notifications.requestPermission(true);
-
   //1. init firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
-  
 
   //2. init hydrated bloc
-  // HydratedBloc.storage = await HydratedStorage.build(
-  //   storageDirectory: HydratedStorageDirectory.web
-  // );
-
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorageDirectory.web
@@ -41,6 +33,10 @@ void main() async {
 
   //4. init dependencies (that includes AnalyticsService)
   await di.init();
+
+  OneSignal.Debug.setLogLevel(OSLogLevel.none);
+  OneSignal.initialize(Constants.oneSignalAppId);
+  OneSignal.Notifications.requestPermission(true);
 
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(Azbox(child: App(savedThemeMode: savedThemeMode)));

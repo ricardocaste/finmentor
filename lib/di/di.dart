@@ -3,18 +3,17 @@ import 'package:finmentor/infrastructure/services/ganalytics_service.dart';
 import 'package:finmentor/presentation/bloc/home/home_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:finmentor/data/datasources/trophie_datasource.dart';
-import 'package:finmentor/data/datasources/courses_data_source.dart';
+import 'package:finmentor/data/datasources/terms_data_source.dart';
 import 'package:finmentor/data/repositories/authentication_repository_impl.dart';
 import 'package:finmentor/data/repositories/trophie_repository_impl.dart';
 import 'package:finmentor/data/repositories/user_repository_impl.dart';
-import 'package:finmentor/data/repositories/courses_repository_impl.dart';
+import 'package:finmentor/data/repositories/terms_repository_impl.dart';
 import 'package:finmentor/data/providers/firestore_provider.dart';
 import 'package:finmentor/domain/repositories/authentication_repository.dart';
 import 'package:finmentor/domain/repositories/trophie_repository.dart';
 import 'package:finmentor/domain/repositories/user_repository.dart';
-import 'package:finmentor/domain/repositories/courses_repository.dart';
+import 'package:finmentor/domain/repositories/terms_repository.dart';
 import 'package:finmentor/presentation/bloc/authentication/authentication_cubit.dart';
-import 'package:finmentor/presentation/bloc/courses/courses_cubit.dart';
 import 'package:finmentor/presentation/bloc/user/user_cubit.dart';
 import 'package:finmentor/presentation/bloc/trophies/trophies_cubit.dart';
 import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
@@ -35,16 +34,15 @@ Future<void> init() async {
   getIt.registerFactory<TrophiesCubit>(() => TrophiesCubit(getIt(), getIt()));
   getIt.registerFactory<AuthenticationCubit>(() => AuthenticationCubit(getIt(), getIt()));
   getIt.registerFactory<UserCubit>(() => UserCubit(getIt()));
-  getIt.registerFactory<CoursesCubit>(() => CoursesCubit(
-      coursesRepository: getIt<CoursesRepository>(),
+  getIt.registerFactory<TermsCubit>(() => TermsCubit(
+      termsRepository: getIt<TermsRepository>(),
     ),
   );
-  getIt.registerLazySingleton(() => TermsCubit());
 
   // Data sources
-  getIt.registerLazySingleton<CoursesDataSource>(() => CoursesDataSource());
-  getIt.registerLazySingleton<CoursesRepository>(() => CoursesRepositoryImpl(
-    coursesDataSource: getIt<CoursesDataSource>()
+  getIt.registerLazySingleton<TermsDataSource>(() => TermsDataSource());
+  getIt.registerLazySingleton<TermsRepository>(() => TermsRepositoryImpl(
+    termsDataSource: getIt<TermsDataSource>()
   ));
   getIt.registerLazySingleton<TrophiesDataSource>(() => TrophiesDataSource());
 

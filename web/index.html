@@ -33,6 +33,28 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+
+  <!-- Firebase Configuration -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJ7N4ri5RPqlOM7VC7IqpGWpIwzzrxn0A",
+      authDomain: "finmentor-ai.firebaseapp.com",
+      projectId: "finmentor-ai",
+      storageBucket: "finmentor-ai.firebasestorage.app",
+      messagingSenderId: "99475374148",
+      appId: "1:99475374148:web:d5a88207cf0fda58befc11",
+      measurementId: "G-JW5PWLG3T8"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

@@ -46,22 +46,31 @@ class DetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              ...term.content.map((paragraph) => Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+              Text(
+                term.content,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black87,
+                  height: 1.5,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
                 child: Text(
-                  paragraph,
+                  term.content,
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.black87,
                     height: 1.5,
                   ),
                 ),
-              )).toList(),
+              ),
               const SizedBox(height: 24),
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
-                  term.imagePath,
+                  term.image,
                   width: double.infinity,
                   height: 300,
                   fit: BoxFit.cover,
