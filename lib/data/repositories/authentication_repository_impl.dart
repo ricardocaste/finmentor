@@ -8,16 +8,16 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   late final FirebaseAuth _firebaseAuth;
 
   AuthenticationRepositoryImpl() {
-    try {
-      final app = Firebase.app("finmentor");
-      _firebaseAuth = FirebaseAuth.instanceFor(app: app);
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error getting Firebase Auth instance: $e');
-      }
+    // try {
+    //   final app = Firebase.app("finmentor");
+    //   _firebaseAuth = FirebaseAuth.instanceFor(app: app);
+    // } catch (e) {
+    //   if (kDebugMode) {
+    //     print('Error getting Firebase Auth instance: $e');
+    //   }
       // Fallback a la instancia por defecto si hay error
       _firebaseAuth = FirebaseAuth.instance;
-    }
+    // }
   }
 
   @override

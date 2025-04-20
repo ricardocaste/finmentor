@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:finmentor/presentation/nav/route_generator.dart';
 import 'package:finmentor/presentation/themes.dart';
+import 'package:azbox/azbox.dart';
 
 class App extends StatelessWidget {
   const App({super.key, this.savedThemeMode});
@@ -23,8 +24,9 @@ class App extends StatelessWidget {
           theme: theme,
           initialRoute: '/',
           onGenerateRoute: RouteGenerator.generateRouter,
-          
-          
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale
       )
     );
   }

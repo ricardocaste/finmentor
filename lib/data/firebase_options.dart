@@ -52,11 +52,6 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB99999999999999999999999999999999',
-    appId: '1:9999999999999999999:web:99999999999999999999',
-    messagingSenderId: '9999999999999999999',
-    projectId: '9999999999999999999',
-    authDomain: '9999999999999999999.firebaseapp.com',
-    storageBucket: '9999999999999999999.appspot.com',   
+
   );
 }

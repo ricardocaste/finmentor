@@ -1,3 +1,6 @@
+import 'package:finmentor/infrastructure/services/branch_service.dart';
+import 'package:finmentor/infrastructure/services/ganalytics_service.dart';
+import 'package:finmentor/presentation/bloc/home/home_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:finmentor/data/datasources/trophie_datasource.dart';
 import 'package:finmentor/data/datasources/courses_data_source.dart';
@@ -19,15 +22,16 @@ import 'package:finmentor/presentation/bloc/terms/terms_cubit.dart';
 final getIt = GetIt.instance;
 Future<void> init() async {
 
-  getIt.registerLazySingleton<CoursesDataSource>(() => CoursesDataSource());
-  getIt.registerLazySingleton<CoursesRepository>(() => CoursesRepositoryImpl(
-    coursesDataSource: getIt<CoursesDataSource>()
-  ));
-  getIt.registerLazySingleton<FirestoreProvider>(() => FirestoreProvider());
-  getIt.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl());
-  getIt.registerLazySingleton<TrophiesDataSource>(() => TrophiesDataSource());
-  getIt.registerLazySingleton<TrophiesRepository>(() => TrophiesRepositoryImpl(getIt<TrophiesDataSource>()));
-  getIt.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(getIt()));
+    // Analytics
+  getIt.registerSingletonAsync<AnalyticsService>(() async {
+    final service = AnalyticsService();
+    await service.init();
+    return service;
+  });
+  getIt.registerLazySingleton<BranchService>(() => BranchService());
+
+  // Blocs / Cubits
+  getIt.registerFactory<HomeCubit>(() => HomeCubit());
   getIt.registerFactory<TrophiesCubit>(() => TrophiesCubit(getIt(), getIt()));
   getIt.registerFactory<AuthenticationCubit>(() => AuthenticationCubit(getIt(), getIt()));
   getIt.registerFactory<UserCubit>(() => UserCubit(getIt()));
@@ -36,4 +40,20 @@ Future<void> init() async {
     ),
   );
   getIt.registerLazySingleton(() => TermsCubit());
+
+  // Data sources
+  getIt.registerLazySingleton<CoursesDataSource>(() => CoursesDataSource());
+  getIt.registerLazySingleton<CoursesRepository>(() => CoursesRepositoryImpl(
+    coursesDataSource: getIt<CoursesDataSource>()
+  ));
+  getIt.registerLazySingleton<TrophiesDataSource>(() => TrophiesDataSource());
+
+  // Providers
+  getIt.registerLazySingleton<FirestoreProvider>(() => FirestoreProvider());
+  
+  // Repositories
+  getIt.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl());
+  getIt.registerLazySingleton<TrophiesRepository>(() => TrophiesRepositoryImpl(getIt<TrophiesDataSource>()));
+  getIt.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(getIt()));
+  
 }

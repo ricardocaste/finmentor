@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:azbox/azbox.dart';
 import 'package:finmentor/domain/models/term.dart';
+import 'package:finmentor/presentation/bloc/home/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finmentor/di/di.dart';
@@ -14,10 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+  const HomePage({super.key, required this.homeCubit});
 
-  final String title;
-  //final CoursesCubit coursesCubit;
+  final HomeCubit homeCubit;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -119,9 +120,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           Image.asset('assets/images/minilogo.png', width: 50, height: 50),
           const SizedBox(height: 6),
-          const Text(
-            'Dashboard',
-            style: TextStyle(
+          Text(
+            'Dashboard'.translate(capitalize: true),
+            style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
@@ -143,9 +144,9 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Summary',
-          style: TextStyle(
+        Text(
+          'Summary'.translate(capitalize: true),
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -327,9 +328,9 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Know more about the project',
-          style: TextStyle(
+        Text(
+          'know more about the project'.translate(capitalize: true),
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -337,9 +338,9 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: 24),
         
         // Our Team Section
-        const Text(
-          'Our team',
-          style: TextStyle(
+        Text(
+          'our team'.translate(capitalize: true),
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -353,9 +354,9 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: 32),
         
         // We work with Section
-        const Text(
-          'We work with',
-          style: TextStyle(
+        Text(
+          'we work with'.translate(capitalize: true),
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -369,9 +370,9 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: 32),
         
         // Testimonials Section
-        const Text(
-          'What they say about us',
-          style: TextStyle(
+        Text(
+          'what they say about us'.translate(capitalize: true),
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),

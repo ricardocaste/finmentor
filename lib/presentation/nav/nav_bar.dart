@@ -1,6 +1,11 @@
 import 'dart:async';
 
+import 'package:finmentor/infrastructure/services/branch_service.dart';
+import 'package:finmentor/infrastructure/services/posthog_service.dart';
+import 'package:finmentor/presentation/bloc/home/home_cubit.dart';
+import 'package:finmentor/presentation/pages/settings/settings_page.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,6 +22,7 @@ class TabIndices {
   static const TabIndex home = 0;
   static const TabIndex courses = 1;
   static const TabIndex trophies = 2;
+  static const TabIndex settings = 3;
 
   static String getName(TabIndex index) {
     switch (index) {
@@ -26,6 +32,8 @@ class TabIndices {
         return 'courses';
       case trophies:
         return 'trophies';
+      case settings:
+        return 'settings';
       default:
         return 'unknown';
     }
@@ -44,7 +52,7 @@ class NavBarState extends State<NavBar> {
 
   List<Widget> tabItems = [];
   late final authenticationCubit = getIt<AuthenticationCubit>();
-  //late final coursesCubit = getIt<CoursesCubit>();
+  late final homeCubit = getIt<HomeCubit>();
   late final trophiesCubit = getIt<TrophiesCubit>();
   //Branch
   StreamSubscription? _branchSubscription;
@@ -52,6 +60,10 @@ class NavBarState extends State<NavBar> {
   @override
   void initState() {
     super.initState();
+
+    //Analytics
+    _initAnalytics();
+
     //Auth
     // if (Utils.getUser() == null) {
     //   authenticationCubit.ghostLogin();
@@ -64,11 +76,23 @@ class NavBarState extends State<NavBar> {
 
     //TabBar
     tabItems = [
-      HomePage(title: 'title'),
+      HomePage(homeCubit: homeCubit),
       CoursesPage(),
       TrophiesPage(trophiesCubit: trophiesCubit),
+      const SettingsPage(),
     ];
   }
+
+   void _initAnalytics() async {
+      try {
+        await PosthogService().initialize();
+        //await BranchService().initialize();
+      } catch (e) {
+        if (kDebugMode) {
+          print('Error al inicializar Analytics Tools: $e');
+        }
+      }
+    }
 
 
   @override
@@ -150,6 +174,21 @@ class NavBarState extends State<NavBar> {
                                       )),
                               title: Text(
                                 'Trophies',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            FlashyTabBarItem(
+                              icon:
+                                  SvgPicture.asset('assets/images/settings.svg',
+                                      colorFilter: ColorFilter.mode(
+                                        Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color!,
+                                        BlendMode.srcIn,
+                                      )),
+                              title: Text(
+                                'Settings',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
